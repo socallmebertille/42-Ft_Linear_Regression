@@ -25,15 +25,6 @@ def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
     theta1 -= tmp1
     return theta0, theta1
 
-def calculate_cost(data, theta0, theta1):
-    m = len(data)
-    total_error = 0
-    for elem in data:
-        estimate = theta0 + (theta1 * elem[0])
-        error = estimate - elem[1]
-        total_error += error ** 2
-    return total_error / (2 * m)
-
 def main():
     # get data
     try:
@@ -76,35 +67,30 @@ def main():
     print(f"After: {normalized_data[0][0]:.4f}, {normalized_data[0][1]:.4f}")
     
     # STEP 3 : train on normalized data
-    theta0 = 0.0
-    theta1 = 0.0
-    iterations = 1000
-    learningRate = 0.1
+    theta0, theta1, learningRate = 0.0, 0.0, 0.1
+    i, iterations = 0, 1000
+    converged = False
     threshold = 0.0001
-    print(f"\nStarting training (lr={learningRate}, iterations={iterations})...")
-    
-    for i in range(iterations):
+
+    while not converged and i < iterations:
         old_theta0, old_theta1 = theta0, theta1
         theta0, theta1 = gradient_descent_algorithm(
             normalized_data, theta0, theta1, learningRate
         )
         change = abs(theta0 - old_theta0) + abs(theta1 - old_theta1)
-        if i % 100 == 0 or i == iterations - 1:
-            cost = calculate_cost(normalized_data, theta0, theta1)
-            print(f"Iteration {i:4d}: theta0={theta0:8.4f}, theta1={theta1:8.4f}, cost={cost:.6f}")
         if change < threshold:
-            print(f"\n✅ Convergence atteinte à l'itération {i} (change={change:.6f})")
-            break
+            print(f"\n✅ Convergence achieved at iteration {i} (change={change:.6f})")
+            converged = True
     
     # STEP 4 : denormalize thetas
     # formula to get back real thetas : value = value_normalized * (max - min) + min
     real_theta1 = theta1 * (max_price - min_price) / (max_mileage - min_mileage)
     real_theta0 = min_price + theta0 * (max_price - min_price) - real_theta1 * min_mileage
     
-    print(f"\nFinal thetas (for real data): theta0={real_theta0:.2f}, theta1={real_theta1:.6f}")
+    print(f"\nFinal thetas : theta0={real_theta0:.2f}, theta1={real_theta1:.6f}")
 
     # verification
-    print("\nTest predictions:")
+    print("\nCheck predictions:")
     for i in [0, len(data)//2, -1]:
         km = data[i][0]
         real_price = data[i][1]
