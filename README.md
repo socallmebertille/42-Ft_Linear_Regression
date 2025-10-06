@@ -65,5 +65,6 @@ To find `a` and `b`, we have at our disposal :
 
 <h3>Bonuses</h3>
 
-1-2. The goal is to draw a plot of data into a graph, then draw the regression line to see the precision of this project.
-3. The aim of this part is to calculate the precision of the algorithm that we've been coding. To do so, we know that `R²` or 'coefficient of determination' is the most appropriate and is set at : `R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)` where `ŷ` is our prediction. `R²` answer to the question "What percentage of variation can we explain ?", so `R²` is between 0.00 and 1.00.
+1 - 2 . The goal is to draw a plot of data into a graph, then draw the regression line to see the precision of this project.
+
+3 . The aim of this part is to calculate the precision of the algorithm that we've been coding. To do so, we know that `R²` or 'coefficient of determination' is the most appropriate and is set at : `R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)` where `ŷ` is our prediction. `R²` answer to the question "What percentage of variation can we explain ?", so `R²` is between 0.00 and 1.00.
