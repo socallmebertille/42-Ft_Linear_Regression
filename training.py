@@ -10,18 +10,29 @@ def get_theta():
         print(f"Error when loading theta.json: {e}")
         sys.exit(1)
 
-def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.07):
-    sum = 0
+def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
+    sum0 = 0
+    sum1 = 0
     for elem in data:
-        sum += prediction.estimate_price(elem[0], theta0, theta1) - elem[1]
-    tmp0 = learningRate * (sum/len(data)) if len(data) > 0 else None
+        error = prediction.estimate_price(elem[0], theta0, theta1) - elem[1]
+        sum0 += error
+        sum1 += error * elem[0]
+    
+    tmp0 = learningRate * (sum0/len(data)) if len(data) > 0 else 0
+    tmp1 = learningRate * (sum1/len(data)) if len(data) > 0 else 0
+    
     theta0 -= tmp0
-    sum = 0
-    for elem in data:
-        sum += (prediction.estimate_price(elem[0], theta0, theta1) - elem[1]) * elem[0]
-    tmp1 = learningRate * (sum/len(data)) if len(data) > 0 else None
     theta1 -= tmp1
     return theta0, theta1
+
+def calculate_cost(data, theta0, theta1):
+    m = len(data)
+    total_error = 0
+    for elem in data:
+        estimate = theta0 + (theta1 * elem[0])
+        error = estimate - elem[1]
+        total_error += error ** 2
+    return total_error / (2 * m)
 
 def main():
     # get data
@@ -29,7 +40,7 @@ def main():
         data = []
         with open('./data.csv', 'r') as file:
             reader = csv.reader(file)
-            next(reader) # skip header
+            next(reader)
             for line in reader:
                 mileage = float(line[0])
                 price = float(line[1])
@@ -38,18 +49,73 @@ def main():
         print(f"Error when loading data.csv: {e}.")
         sys.exit(1)
 
-    # get actual thetas
-    theta0, theta1 = get_theta()
-    print(f"Old thetas: {theta0:.2f} {theta1:.2f}")
+    print(f"Loaded {len(data)} cars")
+    
+    # STEP 1 : get min & max to normalize data
+    mileages = [d[0] for d in data]
+    prices = [d[1] for d in data]
+    
+    min_mileage = min(mileages)
+    max_mileage = max(mileages)
+    min_price = min(prices)
+    max_price = max(prices)
+    
+    print(f"\nMileage range: {min_mileage} - {max_mileage} km")
+    print(f"Price range: {min_price} - {max_price} €")
+    
+    # STEP 2 : normalize data between 0 and 1
+    # formula : value_normalized = (value - min) / (max - min)
+    normalized_data = []
+    for mileage, price in data:
+        norm_mileage = (mileage - min_mileage) / (max_mileage - min_mileage)
+        norm_price = (price - min_price) / (max_price - min_price)
+        normalized_data.append((norm_mileage, norm_price))
+    
+    print("\nExample:")
+    print(f"Before: {data[0][0]} km, {data[0][1]}€")
+    print(f"After: {normalized_data[0][0]:.4f}, {normalized_data[0][1]:.4f}")
+    
+    # STEP 3 : train on normalized data
+    theta0 = 0.0
+    theta1 = 0.0
+    iterations = 1000
+    learningRate = 0.1
+    threshold = 0.0001
+    print(f"\nStarting training (lr={learningRate}, iterations={iterations})...")
+    
+    for i in range(iterations):
+        old_theta0, old_theta1 = theta0, theta1
+        theta0, theta1 = gradient_descent_algorithm(
+            normalized_data, theta0, theta1, learningRate
+        )
+        change = abs(theta0 - old_theta0) + abs(theta1 - old_theta1)
+        if i % 100 == 0 or i == iterations - 1:
+            cost = calculate_cost(normalized_data, theta0, theta1)
+            print(f"Iteration {i:4d}: theta0={theta0:8.4f}, theta1={theta1:8.4f}, cost={cost:.6f}")
+        if change < threshold:
+            print(f"\n✅ Convergence atteinte à l'itération {i} (change={change:.6f})")
+            break
+    
+    # STEP 4 : denormalize thetas
+    # formula to get back real thetas : value = value_normalized * (max - min) + min
+    real_theta1 = theta1 * (max_price - min_price) / (max_mileage - min_mileage)
+    real_theta0 = min_price + theta0 * (max_price - min_price) - real_theta1 * min_mileage
+    
+    print(f"\nFinal thetas (for real data): theta0={real_theta0:.2f}, theta1={real_theta1:.6f}")
 
-    # update thetas's values
-    theta0, theta1 = gradient_descent_algorithm(data, theta0, theta1)
-    print(f"New thetas: {theta0:.2f} {theta1:.2f}")
-
-    # update theta.json
+    # verification
+    print("\nTest predictions:")
+    for i in [0, len(data)//2, -1]:
+        km = data[i][0]
+        real_price = data[i][1]
+        predicted = real_theta0 + real_theta1 * km
+        print(f"{km:6.0f} km: real={real_price}€, predicted={predicted:.0f}€")
+    
+    # save thetas in json (a & b from y = ax + b)
     try:
         with open('./theta.json', 'w') as file:
-            json.dump({"theta0": theta0, "theta1": theta1}, file)
+            json.dump({"theta0": real_theta0, "theta1": real_theta1}, file)
+        print("\nThetas saved to theta.json ✅")
     except Exception as e:
         print(f"Error when saving theta.json: {e}.")
         sys.exit(1)
