@@ -67,4 +67,4 @@ To find `a` and `b`, we have at our disposal :
 
 1 - 2 . The goal is to draw a plot of data into a graph, then draw the regression line to see the precision of this project.
 
-3 . The aim of this part is to calculate the precision of the algorithm that we've been coding. To do so, we know that `R²` or 'coefficient of determination' is the most appropriate and is set at : `R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)` where `ŷ` is our prediction. `R²` answer to the question "What percentage of variation can we explain ?", so `R²` is between 0.00 and 1.00.
+3 . The aim of this part is to calculate the precision of the algorithm that we've been coding. To do so, we know that `R²` or 'coefficient of determination' is the most appropriate and is set at : `R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)` where `ŷ` is our prediction. `R²` answer to the question "What percentage of variation can we explain ?", so `R²` is between 0.00 and 1.00. To be more precise, we also used to the `RMSE` or "Root Mean Squared Error" which answers to the question "What is my standard error ?".
