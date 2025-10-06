@@ -18,7 +18,9 @@
   </ul>
   <li class="my-0"><a href="#building-the-42-ft_linear_regression-project">Building the 42 ft_linear_regression project</a>
   <ul class="list-disc pl-4 my-0">
-    <li class="my-0"><a href="#data-analysis">Data Analysis</a></li>
+    <li class="my-0"><a href="#predict-the-price-of-a-car">Predict the price of a car</a></li>
+    <li class="my-0"><a href="#train-the-model">Train the model</a></li>
+    <li class="my-0"><a href="#bonuses">Bonuses</a></li>
   </ul>
   </li>
 </ul>
@@ -36,4 +38,32 @@ To do this, we have a sample of data that gives us access to estimated prices ba
 In general, a linear function can be represented by a straight line where `a` represents the slope of the line and `b` represents the first value of the line in `y`.
 
 <h2>Building the 42 ft_linear_regression project</h2>
-<h3>Data Analysis</h3>
+<h3>Predict the price of a car</h3>
+
+The estimated price of a car in this roject is set at : `estimatePrice(mileage) = θ0 + (θ1 ∗ mileage)` for every given mileage.
+In parallel with the preamble, we find `θ0 = b` and `θ1 = a` in `y = ax + b`.
+
+<h3>Train the model</h3>
+
+To find `a` and `b`, we have at our disposal : 
+```
+                          m-1
+θ0 = θ0 - (learningRate ∗  ∑  (estimateP rice(mileage[i]) − price[i]))
+                          i=0
+
+                          m-1
+θ1 = θ1 - (learningRate ∗  ∑  (estimateP rice(mileage[i]) − price[i]) ∗ mileage[i])
+                          i=0
+
+```
+
+1. Since the formula for θ1 involves multiplying by mileage AND the mileage indicated in the data is very high, we will obtain disproportionate theta values. We will therefore normalise each column to set the maximum value to 1.0 and the minimum value to 0.0.
+2. Next, we will loop until the results of the thetas formula are similar.
+3. At this stage, it is sufficient to denormalise the data and the thetas.
+4. Tests can be carried out to verify the consistency between the estimate and the actual price for a certain mileage.
+5. Finally, we will save thetas in our json.
+
+<h3>Bonuses</h3>
+
+1-2. The goal is to draw a plot of data into a graph, then draw the regression line to see the precision of this project.
+3. The aim of this part is to calculate the precision of the algorithm that we've been coding. To do so, we know that `R²` or 'coefficient of determination' is the most appropriate and is set at : `R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)` where `ŷ` is our prediction. `R²` answer to the question "What percentage of variation can we explain ?", so `R²` is between 0.00 and 1.00.

@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import json, csv, sys
+import json, utils
 
 def plot_data(data, theta0=None, theta1=None):
     mileages = [d[0] for d in data]
@@ -16,26 +16,14 @@ def plot_data(data, theta0=None, theta1=None):
 
     plt.xlabel('Mileage (km)')
     plt.ylabel('Price (€)')
-    plt.title('Car\'s price depending on mileage distribution')
+    plt.title('Distribution of Car Price Based on Mileage')
     plt.legend()
     plt.grid(True)
     plt.show()
 
 def main():
     # get data
-    try:
-        data = []
-        with open('./data.csv', 'r') as file:
-            reader = csv.reader(file)
-            next(reader)
-            for line in reader:
-                mileage = float(line[0])
-                price = float(line[1])
-                data.append((mileage, price))
-    except Exception as e:
-        print(f"Error when loading data.csv: {e}.")
-        sys.exit(1)
-    print(f"Loaded {len(data)} cars")
+    data = utils.get_data()
 
     # get thetas if available
     try:

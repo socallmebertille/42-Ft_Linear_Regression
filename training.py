@@ -1,14 +1,4 @@
-import sys, json, csv, prediction
-
-def get_theta():
-    try:
-        with open('./theta.json', 'r') as file:
-            data = json.load(file)
-        theta = [data["theta0"], data["theta1"]]
-        return theta[0], theta[1]
-    except Exception as e:
-        print(f"Error when loading theta.json: {e}")
-        sys.exit(1)
+import sys, json, prediction, utils
 
 def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
     sum0 = 0
@@ -27,20 +17,7 @@ def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
 
 def main():
     # get data
-    try:
-        data = []
-        with open('./data.csv', 'r') as file:
-            reader = csv.reader(file)
-            next(reader)
-            for line in reader:
-                mileage = float(line[0])
-                price = float(line[1])
-                data.append((mileage, price))
-    except Exception as e:
-        print(f"Error when loading data.csv: {e}.")
-        sys.exit(1)
-
-    print(f"Loaded {len(data)} cars")
+    data = utils.get_data()
     
     # STEP 1 : get min & max to normalize data
     mileages = [d[0] for d in data]
