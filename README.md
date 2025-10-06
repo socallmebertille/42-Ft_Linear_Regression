@@ -56,6 +56,7 @@ To find `a` and `b`, we have at our disposal :
                           i=0
 
 ```
+where learning rate is the size of the steps your algorithm takes to adjust the thetas.
 
 1. Since the formula for θ1 involves multiplying by mileage AND the mileage indicated in the data is very high, we will obtain disproportionate theta values. We will therefore normalise each column to set the maximum value to 1.0 and the minimum value to 0.0.
 2. Next, we will loop until the results of the thetas formula are similar.
