@@ -15,11 +15,10 @@ def calculate_thetas(data, theta0, theta1, learningRate):
     theta1 -= tmp1
     return theta0, theta1
 
-def gradient_descent_algorithm(data):
-    theta0, theta1, learningRate = 0.0, 0.0, 0.1
-    i, iterations = 0, 1000
+def gradient_descent_algorithm(data, learningRate=0.1, max_iterations=1000, threshold=0.0001):
+    theta0, theta1 = 0.0, 0.0
+    i, iterations = 0, max_iterations
     converged = False
-    threshold = 0.0001
 
     while not converged and i < iterations:
         old_theta0, old_theta1 = theta0, theta1
@@ -30,6 +29,7 @@ def gradient_descent_algorithm(data):
         if change < threshold:
             print(f"\n✅ Convergence achieved at iteration {i} (change={change:.6f})")
             converged = True
+        i += 1
     return theta0, theta1
 
 def main():
@@ -61,7 +61,7 @@ def main():
     print(f"After: {normalized_data[0][0]:.4f}, {normalized_data[0][1]:.4f}")
 
     # STEP 3 : gradient descend algorithm (= train on normalized data)
-    theta0, theta1 = gradient_descent_algorithm(normalized_data)
+    theta0, theta1 = gradient_descent_algorithm(normalized_data, 0.1, 10000, 0.00001)
     
     # STEP 4 : denormalize thetas
     # formula to get back real thetas : value = value_normalized * (max - min) + min

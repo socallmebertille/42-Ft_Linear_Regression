@@ -55,22 +55,37 @@ In parallel with the preamble, we find `θ0 = b` and `θ1 = a` in `y = ax + b`.
 
 To find `a` and `b`, we have at our disposal : 
 ```
-                          m-1
-θ0 = θ0 - (learningRate ∗  ∑  (estimateP rice(mileage[i]) − price[i]))
-                          i=0
+                          1    m-1
+θ0 = θ0 - (learningRate ∗ __ ∗  ∑  (estimateP rice(mileage[i]) − price[i]))
+                          m    i=0
 
-                          m-1
-θ1 = θ1 - (learningRate ∗  ∑  (estimateP rice(mileage[i]) − price[i]) ∗ mileage[i])
-                          i=0
+                          1    m-1
+θ1 = θ1 - (learningRate ∗ __ ∗  ∑  (estimateP rice(mileage[i]) − price[i]) ∗ mileage[i])
+                          m    i=0
 
 ```
 where learning rate is the size of the steps your algorithm takes to adjust the thetas.
 
-1. Since the formula for θ1 involves multiplying by mileage AND the mileage indicated in the data is very high, we will obtain disproportionate theta values. We will therefore normalise each column to set the maximum value to 1.0 and the minimum value to 0.0.
-2. Next, we will loop until the results of the thetas formula are similar.
-3. At this stage, it is sufficient to denormalise the data and the thetas.
-4. Tests can be carried out to verify the consistency between the estimate and the actual price for a certain mileage.
-5. Finally, we will save thetas in our json.
+1. **Data Normalization**
+   - Problem: Raw mileage values (up to 240,000) cause numerical instability
+   - Solution: Normalize all values between 0.0 and 1.0
+   - Formula: `normalized = (value - min) / (max - min)`
+
+2. **Gradient Descent Loop**
+   - Initialize θ0 = 0, θ1 = 0
+   - Iterate until convergence (change < threshold) or max iterations
+   - Update thetas using gradient formulas
+
+3. **Denormalization**
+   - Convert normalized thetas back to work with real mileage values
+   - Formula: `θ1_real = θ1_norm × (price_range / mileage_range)`
+
+4. **Validation**
+   - Test predictions against actual prices
+   - Display sample results
+
+5. **Save Results**
+   - Store final θ0 and θ1 in `theta.json`
 
 <h3>Bonuses</h3>
 
