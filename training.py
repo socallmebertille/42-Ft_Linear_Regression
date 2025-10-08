@@ -1,6 +1,6 @@
 import sys, json, prediction, utils
 
-def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
+def calculate_thetas(data, theta0, theta1, learningRate):
     sum0 = 0
     sum1 = 0
     for elem in data:
@@ -13,6 +13,23 @@ def gradient_descent_algorithm(data, theta0, theta1, learningRate=0.1):
     
     theta0 -= tmp0
     theta1 -= tmp1
+    return theta0, theta1
+
+def gradient_descent_algorithm(data):
+    theta0, theta1, learningRate = 0.0, 0.0, 0.1
+    i, iterations = 0, 1000
+    converged = False
+    threshold = 0.0001
+
+    while not converged and i < iterations:
+        old_theta0, old_theta1 = theta0, theta1
+        theta0, theta1 = calculate_thetas(
+            data, theta0, theta1, learningRate
+        )
+        change = abs(theta0 - old_theta0) + abs(theta1 - old_theta1)
+        if change < threshold:
+            print(f"\n✅ Convergence achieved at iteration {i} (change={change:.6f})")
+            converged = True
     return theta0, theta1
 
 def main():
@@ -42,22 +59,9 @@ def main():
     print("\nExample:")
     print(f"Before: {data[0][0]} km, {data[0][1]}€")
     print(f"After: {normalized_data[0][0]:.4f}, {normalized_data[0][1]:.4f}")
-    
-    # STEP 3 : train on normalized data
-    theta0, theta1, learningRate = 0.0, 0.0, 0.1
-    i, iterations = 0, 1000
-    converged = False
-    threshold = 0.0001
 
-    while not converged and i < iterations:
-        old_theta0, old_theta1 = theta0, theta1
-        theta0, theta1 = gradient_descent_algorithm(
-            normalized_data, theta0, theta1, learningRate
-        )
-        change = abs(theta0 - old_theta0) + abs(theta1 - old_theta1)
-        if change < threshold:
-            print(f"\n✅ Convergence achieved at iteration {i} (change={change:.6f})")
-            converged = True
+    # STEP 3 : gradient descend algorithm (= train on normalized data)
+    theta0, theta1 = gradient_descent_algorithm(normalized_data)
     
     # STEP 4 : denormalize thetas
     # formula to get back real thetas : value = value_normalized * (max - min) + min

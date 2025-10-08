@@ -24,17 +24,8 @@ def plot_data(data, theta0=None, theta1=None):
 def main():
     # get data
     data = utils.get_data()
-
     # get thetas if available
-    try:
-        with open('./theta.json', 'r') as file:
-            theta_data = json.load(file)
-        theta0 = theta_data["theta0"]
-        theta1 = theta_data["theta1"]
-        print(f"Using theta0={theta0}, theta1={theta1} from theta.json")
-    except Exception as e:
-        print(f"Error when loading theta.json: {e}. Proceeding without regression line.")
-        theta0, theta1 = None, None
+    theta0, theta1 = utils.get_thetas()
 
     # plot data
     plot_data(data)

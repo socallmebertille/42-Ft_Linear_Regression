@@ -37,6 +37,14 @@ To do this, we have a sample of data that gives us access to estimated prices ba
 
 In general, a linear function can be represented by a straight line where `a` represents the slope of the line and `b` represents the first value of the line in `y`.
 
+To find `a` & `b`, also called `θ0` & `θ1`, we will implement the GRADIENT DESCENT ALGORITHM :
+1. Initialize theta0, theta1
+2. Repeat until convergence:
+   - Calculate gradients
+   - Update thetas
+   - Check convergence
+3. Return optimal thetas
+
 <h2>Building the 42 ft_linear_regression project</h2>
 <h3>Predict the price of a car</h3>
 
