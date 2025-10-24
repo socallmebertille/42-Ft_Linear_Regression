@@ -68,7 +68,7 @@ def main():
         norm_price = (price - min_price) / (max_price - min_price)
         normalized_data.append((norm_mileage, norm_price))
 
-    print("\nExample:")
+    print("\nExample of normalization:")
     print(f"Before: {data[0][0]} km, {data[0][1]}€")
     print(f"After: {normalized_data[0][0]:.4f}, {normalized_data[0][1]:.4f}")
 
