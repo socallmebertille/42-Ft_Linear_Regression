@@ -1,5 +1,6 @@
 import utils
 
+
 def precision(data, theta0, theta1):
     if not data:
         return 0.0  # Avoid division by zero if data is empty
@@ -10,12 +11,15 @@ def precision(data, theta0, theta1):
     ss_total = sum((elem[1] - mean_price) ** 2 for elem in data)
 
     # Residual sum of squares = errors = Σ(y_i - ŷ_i)²
-    ss_residual = sum((elem[1] - (theta0 + theta1 * elem[0])) ** 2 for elem in data)
+    ss_residual = sum(
+        (elem[1] - (theta0 + theta1 * elem[0])) ** 2 for elem in data
+    )
 
     rmse = (ss_residual / len(data)) ** 0.5  # Root Mean Squared Error
 
     # R² = 1 - (Σ(y_i - ŷ_i)² / Σ(y_i - ȳ)²)
     return 1 - (ss_residual / ss_total) if ss_total != 0 else 0.0, rmse
+
 
 def main():
     # get data
@@ -39,6 +43,7 @@ def main():
     print(f"Average error : ±{rmse:.0f}€")
 
     return 0
+
 
 if __name__ == "__main__":
     main()

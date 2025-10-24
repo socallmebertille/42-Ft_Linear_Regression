@@ -1,4 +1,7 @@
-import sys, csv, json
+import csv
+import json
+import sys
+
 
 def get_data():
     try:
@@ -15,6 +18,7 @@ def get_data():
         print(f"Error when loading data.csv: {e}.")
         sys.exit(1)
 
+
 def get_thetas():
     try:
         with open('./theta.json', 'r') as file:
@@ -24,5 +28,8 @@ def get_thetas():
         print(f"(θ0, θ1) = ({theta0:.4f}, {theta1:.4f})")
         return theta0, theta1
     except Exception as e:
-        print(f"Error when loading theta.json: {e}. Proceeding without regression line.")
+        print(
+            f"Error when loading theta.json: {e}. "
+            f"Proceeding without regression line."
+        )
         return None, None

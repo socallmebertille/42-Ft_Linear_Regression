@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
-import json, utils
+
+import utils
+
 
 def plot_data(data, theta0=None, theta1=None):
     mileages = [d[0] for d in data]
@@ -21,6 +23,7 @@ def plot_data(data, theta0=None, theta1=None):
     plt.grid(True)
     plt.show()
 
+
 def main():
     # get data
     data = utils.get_data()
@@ -31,6 +34,7 @@ def main():
     plot_data(data)
     # plot data with regression line if thetas are available
     plot_data(data, theta0, theta1)
+
 
 if __name__ == "__main__":
     main()
