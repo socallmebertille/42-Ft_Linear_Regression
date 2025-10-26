@@ -14,6 +14,7 @@
 <ul class="list-disc pl-4 my-0">
   <li class="my-0"><a href="#overview">Overview</a></li>
   <ul class="list-disc pl-4 my-0">
+    <li class="my-0"><a href="#few-python-notions">Few Python notions</a></li>
     <li class="my-0"><a href="#the-basics-of-linear-regression">The basics of linear regression</a></li>
   </ul>
   <li class="my-0"><a href="#building-the-42-ft_linear_regression-project">Building the 42 ft_linear_regression project</a>
@@ -26,6 +27,41 @@
 </ul>
 
 <h2>Overview</h2>
+<h3>Few Python notions</h3>
+
+- `flake8`
+
+```
+            installation:
+pip install flake8
+export PATH="$HOME/.local/bin:$PATH"
+source ~/.zshrc                           // if zsh env
+
+            usage:
+flake8 my_file.py
+flake8 my_project/
+```
+
+Return syntax errors or possible syntax improvements :
+| Code | Meaning                                     |
+| ---- | ------------------------------------------- |
+| E501 | Line too long                               |
+| E302 | Not enough blank lines before a function    |
+| F401 | Unused import                               |
+| F841 | Variable assigned but never used            |
+| W291 | Spaces at the end of the line               |
+| C901 | Function too complex                        |
+
+- `yield`
+
+| Aspect                   | `return`             | `yield`                                    |
+| ------------------------ | -------------------- | ------------------------------------------ |
+| Interrupts the function  | Yes (permanently)    | No (pauses, can resume)                    |
+| Returns a value          | Once only            | Several times (once per call to `next()`)  |
+| Memory usage             | Stores everything    | Produced on demand                         |
+| Output type              | Direct value         | Generator (`<generator object ...>`)       |
+
+
 <h3>The basics of linear regression</h3>
 
 Here, in this topic, we will try to estimate a value `y` based on a value `x`, i.e. the price of a car based on its mileage.
